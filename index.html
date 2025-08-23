@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TORA FACE - National Security System</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hidden { display: none; }
+        .flag-burundi { background: linear-gradient(to right, #ff0000, #00ff00, #ffffff); }
+        .flag-rwanda { background: linear-gradient(to bottom, #00a1de, #fad201, #00a651); }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-shield-alt text-2xl"></i>
+                    <h1 class="text-2xl font-bold">TORA FACE</h1>
+                    <span class="text-sm opacity-75">National Security System</span>
+                </div>
+                <div id="user-info" class="hidden flex items-center space-x-4">
+                    <span id="user-badge" class="text-sm"></span>
+                    <button id="logout-btn" class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-sm">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg card-shadow w-full max-w-md">
+            <div class="text-center mb-8">
+                <i class="fas fa-shield-alt text-6xl text-blue-600 mb-4"></i>
+                <h2 class="text-3xl font-bold text-gray-800">TORA FACE</h2>
+                <p class="text-gray-600 mt-2">Police & Security Officers Only</p>
+                <div class="flex justify-center space-x-2 mt-4">
+                    <div class="flag-burundi w-8 h-5 rounded"></div>
+                    <div class="flag-rwanda w-8 h-5 rounded"></div>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        <i class="fas fa-envelope mr-2"></i>Email
+                    </label>
+                    <input type="email" id="login-email" required
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                           placeholder="officer@police.gov">
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        <i class="fas fa-lock mr-2"></i>Password
+                    </label>
+                    <input type="password" id="login-password" required
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                           placeholder="Enter your password">
+                </div>
+                <button type="submit" 
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Login
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <a href="#" id="forgot-password" class="text-blue-600 hover:underline text-sm">
+                    Forgot Password?
+                </a>
+                <div class="mt-4 pt-4 border-t">
+                    <p class="text-xs text-gray-500">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        For authorized police and security personnel only
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="hidden">
+        <div class="container mx-auto px-4 py-8">
+            <!-- Dashboard Header -->
+            <div class="bg-white rounded-lg card-shadow p-6 mb-8">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Face Recognition Dashboard</h2>
+                        <p class="text-gray-600">Upload a photo to identify individuals using AI</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm text-gray-500">Total Searches</div>
+                        <div id="search-count" class="text-2xl font-bold text-blue-600">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Section -->
+            <div class="bg-white rounded-lg card-shadow p-6 mb-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-upload mr-2"></i>Upload Photo for Analysis
+                </h3>
+                
+                <div id="upload-area" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 transition-colors cursor-pointer">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-gray-600 mb-2">Click to upload or drag and drop</p>
+                    <p class="text-sm text-gray-500">PNG, JPG, JPEG up to 16MB</p>
+                    <input type="file" id="photo-input" accept="image/*" class="hidden">
+                </div>
+
+                <div id="image-preview" class="hidden mt-4">
+                    <img id="preview-img" class="max-w-xs mx-auto rounded-lg shadow">
+                    <div class="mt-4 text-center">
+                        <button id="analyze-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">
+                            <i class="fas fa-search mr-2"></i>Analyze Photo
+                        </button>
+                        <button id="clear-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg ml-2">
+                            <i class="fas fa-times mr-2"></i>Clear
+                        </button>
+                    </div>
+                </div>
+
+                <div id="loading" class="hidden text-center py-8">
+                    <div class="loading-spinner mx-auto mb-4"></div>
+                    <p class="text-gray-600">Analyzing photo and searching databases...</p>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results-section" class="hidden">
+                <div class="bg-white rounded-lg card-shadow p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">
+                        <i class="fas fa-user-check mr-2"></i>Analysis Results
+                    </h3>
+                    
+                    <div id="face-analysis" class="mb-6">
+                        <!-- Face analysis results will be inserted here -->
+                    </div>
+
+                    <div id="search-results" class="space-y-4">
+                        <!-- Search results will be inserted here -->
+                    </div>
+
+                    <div class="mt-6 text-center">
+                        <button id="export-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">
+                            <i class="fas fa-download mr-2"></i>Export Report
+                        </button>
+                        <button id="new-search-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg ml-2">
+                            <i class="fas fa-plus mr-2"></i>New Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search History -->
+            <div class="bg-white rounded-lg card-shadow p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">
+                    <i class="fas fa-history mr-2"></i>Recent Searches
+                </h3>
+                <div id="search-history" class="space-y-2">
+                    <p class="text-gray-500 text-center py-4">No recent searches</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/face-recognition.js"></script>
+</body>
+</html>
+
