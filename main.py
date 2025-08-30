@@ -43,7 +43,15 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 with app.app_context():
     db.create_all()
+from src.models.user import User
 
+with app.app_context():
+    db.create_all()
+    if not User.query.filter_by(email="murikimpanotv@gmail.com").first():
+        default_user = User(username="Admin", email="murikimpanotv@gmail.com", password="685194Gn.")
+        db.session.add(default_user)
+        db.session.commit()
+        print("Default admin account created successfully!")
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve(path):
