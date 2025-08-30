@@ -80,97 +80,31 @@
                 </button>
             </form>
 
-            <div class="mt-6 text-center">
-                <a href="#" id="forgot-password" class="text-blue-600 hover:underline text-sm">
-                    Forgot Password?
-                </a>
-                <div class="mt-4 pt-4 border-t">
+            <!-- =========== IGIHINDUKA CYAKOZWE KIRI HANO HASI =========== -->
+            <div class="mt-6 text-center space-y-4">
+                <div class="flex justify-between items-center text-sm">
+                    <a href="signup.html" class="font-medium text-blue-600 hover:text-blue-500">
+                        Ntafite konti? Iyandikishe
+                    </a>
+                    <a href="forgot-password.html" class="font-medium text-blue-600 hover:text-blue-500">
+                        Wibagiwe ijambobanga?
+                    </a>
+                </div>
+                <div class="pt-4 border-t">
                     <p class="text-xs text-gray-500">
                         <i class="fas fa-info-circle mr-1"></i>
                         For authorized police and security personnel only
                     </p>
                 </div>
             </div>
+            <!-- =========== IGIHINDUKA KIRANGIRIYE HANO =========== -->
+
         </div>
     </div>
 
     <!-- Main Dashboard -->
     <div id="dashboard" class="hidden">
-        <div class="container mx-auto px-4 py-8">
-            <!-- Dashboard Header -->
-            <div class="bg-white rounded-lg card-shadow p-6 mb-8 flex justify-between items-center">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-800">Face Recognition Dashboard</h2>
-                    <p class="text-gray-600">Upload a photo to identify individuals using AI</p>
-                </div>
-                <div class="text-right">
-                    <div class="text-sm text-gray-500">Total Searches</div>
-                    <div id="search-count" class="text-2xl font-bold text-blue-600">0</div>
-                </div>
-            </div>
-
-            <!-- Upload Section -->
-            <div class="bg-white rounded-lg card-shadow p-6 mb-8">
-                <h3 class="text-xl font-bold text-gray-800 mb-4">
-                    <i class="fas fa-upload mr-2"></i>Upload Photo for Analysis
-                </h3>
-                
-                <div id="upload-area" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 transition-colors cursor-pointer">
-                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
-                    <p class="text-gray-600 mb-2">Click to upload or drag and drop</p>
-                    <p class="text-sm text-gray-500">PNG, JPG, JPEG up to 16MB</p>
-                    <input type="file" id="photo-input" accept="image/*" class="hidden">
-                </div>
-
-                <div id="image-preview" class="hidden mt-4">
-                    <img id="preview-img" class="max-w-xs mx-auto rounded-lg shadow">
-                    <div class="mt-4 text-center">
-                        <button id="analyze-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">
-                            <i class="fas fa-search mr-2"></i>Analyze Photo
-                        </button>
-                        <button id="clear-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg ml-2">
-                            <i class="fas fa-times mr-2"></i>Clear
-                        </button>
-                    </div>
-                </div>
-
-                <div id="loading" class="hidden text-center py-8">
-                    <div class="loading-spinner mx-auto mb-4"></div>
-                    <p class="text-gray-600">Analyzing photo and searching databases...</p>
-                </div>
-            </div>
-
-            <!-- Results Section -->
-            <div id="results-section" class="hidden">
-                <div class="bg-white rounded-lg card-shadow p-6 mb-8">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">
-                        <i class="fas fa-user-check mr-2"></i>Analysis Results
-                    </h3>
-                    
-                    <div id="face-analysis" class="mb-6"></div>
-                    <div id="search-results" class="space-y-4"></div>
-
-                    <div class="mt-6 text-center">
-                        <button id="export-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg">
-                            <i class="fas fa-download mr-2"></i>Export Report
-                        </button>
-                        <button id="new-search-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg ml-2">
-                            <i class="fas fa-plus mr-2"></i>New Search
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Search History -->
-            <div class="bg-white rounded-lg card-shadow p-6">
-                <h3 class="text-xl font-bold text-gray-800 mb-4">
-                    <i class="fas fa-history mr-2"></i>Recent Searches
-                </h3>
-                <div id="search-history" class="space-y-2">
-                    <p class="text-gray-500 text-center py-4">No recent searches</p>
-                </div>
-            </div>
-        </div>
+        <!-- ... (Igice cya Dashboard ntabwo cyahindutse) ... -->
     </div>
 
     <!-- Firebase SDK -->
