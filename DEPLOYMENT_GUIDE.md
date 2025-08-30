@@ -1,54 +1,89 @@
-# TORA FACE - Deployment Guide
+TORA FACE – Complete Deployment Guide
 
-## Overview
-TORA FACE is a secure facial recognition system designed for police and national security officers in Burundi and Rwanda.
+1️⃣ Overview
 
-## Prerequisites
-1. Firebase project with Authentication, Firestore, and Storage enabled
-2. Domain name (www.tora-face.bi)
+TORA FACE ni system ikoresha AI facial recognition mu gushakisha abantu babuze, ikaba igenewe abashinzwe umutekano mu Burundi na Rwanda.
+Intego:
+
+Gutahura abantu babuze bifashishijwe isura yabo
+
+Kuhuza ababuze n’imiryango yabo
+
+Gutanga amakuru afasha inzego z’umutekano n’ubutabazi
+
+
+
+---
+
+2️⃣ Prerequisites
+
+1. Firebase project (Authentication, Firestore, Storage enabled)
+
+
+2. Domain name (e.g., www.tora-face.bi)
+
+
 3. SSL certificate
-4. Server with Python 3.11+ support
 
-## Firebase Configuration
 
-### 1. Create Firebase Project
-1. Go to [Firebase Console](https://console.firebase.google.com/)
-2. Create a new project named "tora-face-security"
-3. Enable Authentication with Email/Password provider
-4. Enable Firestore Database
-5. Enable Storage
+4. Server na Python 3.11+ support
 
-### 2. Configure Authentication
-- Enable Email/Password authentication
-- Set up email verification
-- Configure password reset
-- Add authorized domains (including your custom domain)
 
-### 3. Firestore Security Rules
-```javascript
+5. Gunicorn cyangwa Docker (production deployment)
+
+
+
+
+---
+
+3️⃣ Firebase Configuration
+
+3.1 Create Firebase Project
+
+Go to Firebase Console
+
+Create project: tora-face-security
+
+Enable Email/Password Authentication
+
+Enable Firestore Database
+
+Enable Storage
+
+
+3.2 Authentication Settings
+
+Email verification required
+
+Password reset endpoint
+
+Add authorized domains
+
+Only verified users can login
+
+
+3.3 Firestore Security Rules
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Police users collection
+
     match /police_users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
-      allow read: if request.auth != null && 
-        get(/databases/$(database)/documents/police_users/$(request.auth.uid)).data.role == 'admin';
+      allow read: if request.auth != null &&
+                  get(/databases/$(database)/documents/police_users/$(request.auth.uid)).data.role == 'admin';
     }
-    
-    // Search history
-    match /search_history/{document} {
-      allow read, write: if request.auth != null && 
-        resource.data.user_uid == request.auth.uid;
-      allow read: if request.auth != null && 
-        get(/databases/$(database)/documents/police_users/$(request.auth.uid)).data.role == 'admin';
+
+    match /search_history/{docId} {
+      allow read, write: if request.auth != null && resource.data.user_uid == request.auth.uid;
+      allow read: if request.auth != null &&
+                  get(/databases/$(database)/documents/police_users/$(request.auth.uid)).data.role == 'admin';
     }
   }
 }
-```
 
-### 4. Storage Security Rules
-```javascript
+3.4 Storage Security Rules
+
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
@@ -57,12 +92,14 @@ service firebase.storage {
     }
   }
 }
-```
 
-## Environment Configuration
 
-### 1. Update .env file
-```bash
+---
+
+4️⃣ Environment Configuration
+
+4.1 .env File
+
 # Firebase Configuration
 FIREBASE_PROJECT_ID=tora-face-security
 FIREBASE_PRIVATE_KEY_ID=your_actual_private_key_id
@@ -89,180 +126,187 @@ JWT_SECRET_KEY=generate_a_strong_jwt_secret_here
 # Production Settings
 FLASK_ENV=production
 DEBUG=False
-```
+MAX_CONTENT_LENGTH=16777216
 
-### 2. Update Firebase Config in Frontend
-Update `src/static/js/firebase-config.js` with your actual Firebase configuration.
+4.2 Update Frontend Firebase Config
 
-## Deployment Options
+Update src/static/js/firebase-config.js na credentials zawe.
 
-### Option 1: Firebase Hosting (Recommended)
-```bash
-# Install Firebase CLI
-npm install -g firebase-tools
 
-# Login to Firebase
-firebase login
 
-# Initialize Firebase in project directory
-firebase init hosting
+---
 
-# Deploy
-firebase deploy
-```
+5️⃣ Backend Setup
 
-### Option 2: Traditional Server Deployment
-```bash
-# Install dependencies
+5.1 Install Dependencies
+
 pip install -r requirements.txt
 
-# Run with Gunicorn
+5.2 Database Initialization
+
+db.create_all() muri main.py cyangwa migrations niba ukoresha Flask-Migrate
+
+
+5.3 Run Server
+
+Local:
+
+
+python src/main.py
+
+Production with Gunicorn:
+
+
 gunicorn src.main:app --bind 0.0.0.0:8000 --workers 4
-```
 
-### Option 3: Docker Deployment
-```dockerfile
+5.4 Optional Docker Deployment
+
 FROM python:3.11-slim
-
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-
 COPY . .
 EXPOSE 8000
-
 CMD ["gunicorn", "src.main:app", "--bind", "0.0.0.0:8000", "--workers", "4"]
-```
 
-## Security Checklist
 
-### 1. Authentication Security
-- [x] Email verification required
-- [x] Strong password requirements
-- [x] Rate limiting on login attempts
-- [x] Secure session management
-- [x] Role-based access control
+---
 
-### 2. Data Security
-- [x] All data encrypted in transit (HTTPS)
-- [x] Sensitive data encrypted at rest
-- [x] User activity logging
-- [x] Secure file upload validation
-- [x] Input sanitization
+6️⃣ Security Enhancements
 
-### 3. API Security
-- [x] Authentication required for all endpoints
-- [x] CORS properly configured
-- [x] Request rate limiting
-- [x] Input validation
-- [x] Error handling without information disclosure
+1. Authentication
 
-### 4. Infrastructure Security
-- [x] HTTPS enforced
-- [x] Security headers configured
-- [x] Regular security updates
-- [x] Monitoring and alerting
-- [x] Backup and recovery procedures
+Email verification required
 
-## Domain Configuration
+Password hashing with SHA256
 
-### 1. DNS Settings for www.tora-face.bi
-```
-Type: A
-Name: @
-Value: [Firebase Hosting IP]
+JWT tokens for session management
 
-Type: CNAME
-Name: www
-Value: tora-face-security.web.app
-```
+Rate limiting login attempts
 
-### 2. SSL Certificate
-- Use Firebase Hosting automatic SSL
-- Or configure custom SSL certificate
 
-## Monitoring and Maintenance
 
-### 1. Logging
-- Application logs via Python logging
-- Firebase Analytics for user behavior
-- Error tracking and alerting
+2. Input Validation
 
-### 2. Performance Monitoring
-- Response time monitoring
-- Database query optimization
-- Image processing performance
+Sanitize all inputs (signup/login/search)
 
-### 3. Security Monitoring
-- Failed login attempt monitoring
-- Unusual activity detection
-- Regular security audits
+Validate image uploads (size, type, format)
 
-## User Management
 
-### 1. Police Officer Registration
-Only authorized personnel should be able to register. Consider:
-- Manual approval process
-- Verification of badge numbers
-- Department confirmation
 
-### 2. Admin Users
-- Create admin users through Firebase Console
-- Set role to 'admin' in Firestore
-- Grant additional permissions
+3. Role-based Access
 
-## Backup and Recovery
+Admin vs Police officer
 
-### 1. Database Backup
-- Firestore automatic backups
-- Regular export of critical data
-- Test recovery procedures
+Only authorized users can access sensitive endpoints
 
-### 2. File Backup
-- Firebase Storage automatic replication
-- Regular backup of uploaded images
-- Retention policy configuration
 
-## Legal and Compliance
 
-### 1. Data Protection
-- GDPR compliance for EU data
-- Local data protection laws
-- User consent management
+4. Data Security
 
-### 2. Law Enforcement Use
-- Proper authorization procedures
-- Audit trail maintenance
-- Data retention policies
+HTTPS enforced
 
-## Support and Maintenance
+Sensitive data encrypted at rest
 
-### 1. Technical Support
-- Monitor system health
-- Regular updates and patches
-- Performance optimization
+Audit logs for user actions
 
-### 2. User Support
-- Training materials for officers
-- Help documentation
-- Support contact information
+File upload validation
 
-## Troubleshooting
 
-### Common Issues
-1. **Firebase Connection Errors**: Check API keys and project configuration
-2. **Face Detection Failures**: Verify OpenCV installation and image formats
-3. **Authentication Issues**: Check Firebase Auth configuration
-4. **Performance Issues**: Monitor server resources and optimize queries
 
-### Logs Location
-- Application logs: `/var/log/tora-face/`
-- Firebase logs: Firebase Console
-- Server logs: System log files
+5. CORS
 
-## Contact Information
-For technical support and maintenance:
-- System Administrator: [contact information]
-- Firebase Project Owner: [contact information]
-- Emergency Contact: [contact information]
+Restrict to allowed domains instead of *
 
+
+
+
+
+---
+
+7️⃣ Domain & SSL
+
+DNS:
+
+
+Type: A     Name: @     Value: [Firebase Hosting IP]
+Type: CNAME Name: www   Value: tora-face-security.web.app
+
+SSL:
+
+Firebase automatic SSL or custom certificate
+
+
+
+
+---
+
+8️⃣ Monitoring & Logging
+
+Python logging: /var/log/tora-face/
+
+Firebase Analytics: user behavior
+
+Server monitoring: CPU, RAM, image processing
+
+Security monitoring: failed login attempts, unusual activity
+
+
+
+---
+
+9️⃣ Backup & Recovery
+
+Firestore: automatic + scheduled exports
+
+Storage: automatic replication + retention policy
+
+Test restore procedures regularly
+
+
+
+---
+
+🔟 User Management
+
+Police officer registration: manual approval, badge verification
+
+Admin creation: via Firebase console, role='admin'
+
+
+
+---
+
+1️⃣1️⃣ Legal & Compliance
+
+GDPR compliance for EU data
+
+Local data protection laws
+
+Law enforcement authorization and audit trails
+
+Data retention policies
+
+
+
+---
+
+1️⃣2️⃣ Support
+
+Technical: monitoring, patches, updates
+
+User: help docs, training materials, contact info
+
+
+
+---
+
+1️⃣3️⃣ Troubleshooting
+
+Firebase connection errors → check API keys
+
+Face detection failures → verify OpenCV and image format
+
+Authentication issues → check Firebase Auth config
+
+Performance issues → monitor resources, optimize queries
