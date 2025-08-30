@@ -63,3 +63,30 @@ def serve(path):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
+from flask import Flask, render_template, request, redirect, url_for
+
+app = Flask(__name__)
+
+# Signup
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        # Aha twoshira code ibika mu database (nk'ukoresha SQLite, Firebase, MongoDB)
+        return f"Account created successfully for {username}"
+    return render_template('signup.html')
+
+# Login
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        # Aha twoshira code igenzura niba email/password bihuye na database
+        return f"Welcome back {email}!"
+    return render_template('login.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
