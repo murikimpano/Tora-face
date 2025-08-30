@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TORA FACE Dashboard</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="dashboardManager.js" defer></script>
+    <script src="authManager.js" defer></script>
+    <script src="faceRecognitionManager.js" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            0% {opacity:0;}
+            100% {opacity:1;}
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold">TORA FACE Dashboard</h1>
+        <div id="user-info" class="text-sm"></div>
+    </header>
+
+    <main class="container mx-auto p-4">
+
+        <!-- Search Count -->
+        <section class="mb-6">
+            <div class="bg-white rounded-lg shadow p-4 flex justify-between items-center">
+                <div class="text-lg font-semibold">Total Searches:</div>
+                <div id="search-count" class="text-2xl font-bold text-blue-600">0</div>
+            </div>
+        </section>
+
+        <!-- Photo Upload -->
+        <section class="mb-6">
+            <label class="cursor-pointer inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
+                <i class="fas fa-upload mr-2"></i> Upload Photo
+                <input type="file" id="photo-input" class="hidden" accept="image/*">
+            </label>
+        </section>
+
+        <!-- Recent Search History -->
+        <section>
+            <h2 class="text-lg font-semibold mb-2">Recent Searches</h2>
+            <div id="search-history" class="space-y-2">
+                <p class="text-gray-500 text-center py-4">No recent searches</p>
+            </div>
+        </section>
+
+        <!-- System Actions -->
+        <section class="mt-6 flex flex-col md:flex-row gap-4">
+            <button onclick="dashboardManager.exportSystemReport()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition-colors flex items-center">
+                <i class="fas fa-file-alt mr-2"></i> Export Report
+            </button>
+            <button onclick="dashboardManager.showSystemStatus()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded transition-colors flex items-center">
+                <i class="fas fa-info-circle mr-2"></i> System Status
+            </button>
+        </section>
+
+    </main>
+
+    <!-- Notification container (fixed position, handled by JS) -->
+
+    <script>
+        // Update user info in header
+        if (typeof authManager !== 'undefined') {
+            const user = authManager.getCurrentUser();
+            if (user) {
+                document.getElementById('user-info').innerHTML = `
+                    ${user.rank} ${user.badge_number} | ${user.department}, ${user.country}
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
