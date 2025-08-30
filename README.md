@@ -76,7 +76,8 @@ Iyi project yatanzwe hakoreshejwe *MIT License*. Icyo bivuze:
 
 🤝 Umwanditsi
 
-*Muriki Mpano*  
+*Murikimpano*  
+*Dj Gnb flash boy*
 AI & Tech Enthusiast  
 Email: murikimpanotv@gmail.com  
 GitHub: [github.com/Murikimpano](https://github.com/Murikimpano)
