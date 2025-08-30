@@ -1,98 +1,95 @@
-# TORA FACE - Complete System Delivery
+
+# 🌐 TORA FACE - Complete System Delivery
+
+**TORA FACE** ni system yizewe yo gutahura abantu hakoreshejwe isura, yateguwe ku nzego zishinzwe umutekano n’abapolisi mu Burundi no mu Rwanda.  
+System ikoresha **AI** mu gutahura isura, ihuza n’imbuga nkoranyambaga kandi ifite features zizewe mu mutekano.
+
+---
+
+## 🌍 Multilingual Support
+
+- 🇧🇮 Kirundi  
+- 🇷🇼 Kinyarwanda  
+- 🇬🇧 English  
+- 🇰🇪 Swahili  
+- 🇫🇷 Français  
+
+*(Frontend ishobora gushyirwamo button ihindura language mu pages zose.)*
+
+---
 
 ## 🛡️ System Overview
-TORA FACE is a secure facial recognition system designed specifically for police and national security officers in Burundi and Rwanda. The system provides AI-powered face detection, social media integration, and comprehensive security features.
+
+- AI-powered face detection  
+- Social media integration  
+- Comprehensive security features  
+- Role-based access (Police officers only)  
+- Session management and encrypted data storage  
+
+---
 
 ## 📁 Project Structure
-```
-tora-face-backend/
-├── src/
-│   ├── static/
-│   │   ├── index.html              # Main application interface
-│   │   ├── css/
-│   │   │   └── styles.css          # Application styling
-│   │   └── js/
-│   │       ├── firebase-config.js  # Firebase configuration
-│   │       ├── auth.js             # Authentication logic
-│   │       ├── face-recognition.js # Face recognition interface
-│   │       └── dashboard.js        # Dashboard functionality
-│   ├── ai/
-│   │   ├── face_recognition.py     # AI face detection engine
-│   │   └── social_media_scraper.py # Social media integration
-│   ├── firebase/
-│   │   └── auth.py                 # Firebase authentication
-│   ├── routes/
-│   │   ├── auth.py                 # Authentication API routes
-│   │   └── face_recognition.py     # Face recognition API routes
-│   ├── main.py                     # Full Flask application
-│   └── main_simple.py              # Simplified deployment version
-├── .env                            # Environment configuration
-├── requirements.txt                # Python dependencies
-├── Procfile                        # Deployment configuration
-├── DEPLOYMENT_GUIDE.md             # Detailed deployment instructions
-└── security_check.py               # Security verification script
-```
 
-## 🔧 Key Features Implemented
+tora-face-backend/ ├── src/ │   ├── static/ │   │   ├── index.html │   │   ├── css/ │   │   │   └── styles.css │   │   └── js/ │   │       ├── firebase-config.js │   │       ├── auth.js │   │       ├── face-recognition.js │   │       └── dashboard.js │   ├── ai/ │   │   ├── face_recognition.py │   │   └── social_media_scraper.py │   ├── firebase/ │   │   └── auth.py │   ├── routes/ │   │   ├── auth.py │   │   └── face_recognition.py │   ├── main.py │   └── main_simple.py ├── .env ├── requirements.txt ├── Procfile ├── DEPLOYMENT_GUIDE.md └── security_check.py
+
+---
+
+## 🔧 Key Features
 
 ### ✅ Authentication System
-- Firebase Authentication integration
-- Email/password login with verification
-- Password reset functionality
-- Role-based access control (Police officers only)
-- Session management and security
+- Firebase Authentication  
+- Email/password login with verification  
+- Password reset functionality  
+- Role-based access control  
+- Secure session management  
 
 ### ✅ Face Recognition AI
-- OpenCV-based face detection
-- Face encoding and comparison
-- Image quality assessment
-- Age and gender estimation (basic)
-- Confidence scoring
+- OpenCV-based face detection  
+- Face encoding & comparison  
+- Image quality assessment  
+- Basic age & gender estimation  
+- Confidence scoring  
 
 ### ✅ Social Media Integration
-- Public data scraping framework
-- Reverse image search capabilities
-- Metadata extraction
-- Search result aggregation
-- Privacy-compliant data collection
+- Public data scraping framework  
+- Reverse image search  
+- Metadata extraction  
+- Aggregated search results  
+- Privacy-compliant collection  
 
 ### ✅ Security Features
-- HTTPS enforcement
-- Input validation and sanitization
-- Rate limiting
-- Activity logging
-- Encrypted data storage
-- Security headers (Flask-Talisman)
+- HTTPS enforcement  
+- Input validation & sanitization  
+- Rate limiting  
+- Activity logging  
+- Security headers (Flask-Talisman)  
+- Encrypted data storage  
 
 ### ✅ User Interface
-- Modern, responsive design
-- Mobile-friendly interface
-- Burundi/Rwanda flag colors
-- Multi-language support framework
-- Professional security-focused styling
+- Modern, responsive design  
+- Mobile-friendly  
+- Burundi/Rwanda flag colors  
+- Multi-language support framework  
+- Professional security-focused styling  
+
+---
 
 ## 🚀 Deployment Options
 
-### Option 1: Firebase Hosting (Recommended)
-1. Create Firebase project at https://console.firebase.google.com/
-2. Enable Authentication, Firestore, and Storage
-3. Update Firebase configuration in `src/static/js/firebase-config.js`
-4. Deploy using Firebase CLI:
-   ```bash
-   npm install -g firebase-tools
-   firebase login
-   firebase init hosting
-   firebase deploy
-   ```
+### 1. Firebase Hosting (Recommended)
+```bash
+npm install -g firebase-tools
+firebase login
+firebase init hosting
+firebase deploy
 
-### Option 2: Traditional Server Deployment
-1. Set up Python 3.11+ server
-2. Install dependencies: `pip install -r requirements.txt`
-3. Configure environment variables in `.env`
-4. Run with Gunicorn: `gunicorn src.main:app --bind 0.0.0.0:8000`
+2. Traditional Server Deployment
 
-### Option 3: Docker Deployment
-```dockerfile
+pip install -r requirements.txt
+gunicorn src.main:app --bind 0.0.0.0:8000
+
+3. Docker Deployment
+
 FROM python:3.11-slim
 WORKDIR /app
 COPY requirements.txt .
@@ -100,96 +97,171 @@ RUN pip install -r requirements.txt
 COPY . .
 EXPOSE 8000
 CMD ["gunicorn", "src.main:app", "--bind", "0.0.0.0:8000"]
-```
 
-## 🔐 Security Configuration
 
-### Current Security Score: 75% (Good)
-The system has been security-tested and includes:
-- Strong secret keys (32+ characters)
-- Secure file permissions
-- HTTPS enforcement
-- Input validation
-- Error handling
-- Comprehensive logging
-- Firebase security rules
+---
 
-### Required Configuration Updates:
-1. **Firebase Configuration**: Update `src/static/js/firebase-config.js` with actual Firebase project details
-2. **Environment Variables**: Update `.env` with production values
-3. **Domain Configuration**: Set up www.tora-face.bi domain
-4. **SSL Certificate**: Configure HTTPS for production
+🔐 Security Configuration
 
-## 📋 Pre-Deployment Checklist
+Strong secret keys (32+ characters)
 
-### Firebase Setup
-- [ ] Create Firebase project "tora-face-security"
-- [ ] Enable Email/Password authentication
-- [ ] Configure Firestore database
-- [ ] Set up Firebase Storage
-- [ ] Configure security rules
-- [ ] Add authorized domains
+Secure file permissions
 
-### Environment Configuration
-- [ ] Update all placeholder values in `.env`
-- [ ] Generate strong secret keys
-- [ ] Configure Firebase service account
-- [ ] Set production environment variables
+HTTPS enforced
 
-### Security Verification
-- [ ] Run security check: `python security_check.py`
-- [ ] Verify HTTPS configuration
-- [ ] Test authentication flow
-- [ ] Validate input sanitization
-- [ ] Check error handling
+Input validation & sanitization
 
-### Domain and SSL
-- [ ] Purchase www.tora-face.bi domain
-- [ ] Configure DNS settings
-- [ ] Set up SSL certificate
-- [ ] Test domain accessibility
+Error handling without disclosure
 
-## 🔧 Configuration Files
+Comprehensive logging
 
-### Firebase Security Rules (Firestore)
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /police_users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
-      allow read: if request.auth != null && 
-        get(/databases/$(database)/documents/police_users/$(request.auth.uid)).data.role == 'admin';
-    }
-    
-    match /search_history/{document} {
-      allow read, write: if request.auth != null && 
-        resource.data.user_uid == request.auth.uid;
-      allow read: if request.auth != null && 
-        get(/databases/$(database)/documents/police_users/$(request.auth.uid)).data.role == 'admin';
-    }
-  }
-}
-```
+Firebase security rules applied
 
-### Firebase Storage Rules
-```javascript
-rules_version = '2';
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /uploads/{userId}/{allPaths=**} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
-    }
-  }
-}
-```
 
-## 📱 User Management
 
-### Police Officer Registration
-1. Officers must register with verified email addresses
-2. Admin approval required for new accounts
-3. Badge number verification recommended
+---
+
+📋 Pre-Deployment Checklist
+
+1. Firebase Setup
+
+Create project "tora-face-security"
+
+Enable Email/Password auth, Firestore, Storage
+
+Add authorized domains
+
+Configure security rules
+
+
+
+2. Environment Configuration
+
+Update .env with production values
+
+Generate strong secret keys
+
+Configure Firebase service account
+
+
+
+3. Security Verification
+
+Run python security_check.py
+
+Verify HTTPS
+
+Test authentication & input validation
+
+
+
+4. Domain & SSL
+
+Purchase www.tora-face.bi
+
+Configure DNS
+
+Set up SSL certificate
+
+
+
+
+
+---
+
+📱 User Management
+
+Police Officer Registration
+
+Verified email required
+
+Admin approval for new accounts
+
+Badge number verification
+
+Department confirmation
+
+
+Admin Users
+
+Created via Firebase Console
+
+Set role to 'admin' in Firestore
+
+Grant monitoring permissions
+
+
+
+
+---
+
+🔍 Monitoring & Maintenance
+
+Application performance metrics
+
+User activity logging
+
+Error tracking & alerting
+
+Security incident monitoring
+
+Regular maintenance, security updates & backups
+
+
+
+---
+
+📞 Support Information
+
+Technical Requirements: Python 3.11+, Firebase, SSL, domain
+
+Browser Compatibility: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+, iOS Safari, Chrome Mobile
+
+Security Notes:
+
+Never deploy without proper Firebase configuration
+
+Always use HTTPS in production
+
+Regularly update dependencies
+
+Monitor logs & backups
+
+
+Legal Compliance: GDPR & local data protection, user consent, data retention, law enforcement protocols
+
+
+
+---
+
+🎯 Next Steps for Production
+
+Immediate: Configure Firebase & update files
+
+Short-term: Set up domain & SSL
+
+Medium-term: Train officers on system usage
+
+Long-term: Monitor performance & gather feedback
+
+
+
+---
+
+📧 Contact for Support
+
+Review DEPLOYMENT_GUIDE.md
+
+Run security_check.py
+
+Test all functionality before production deployment
+
+
+
+---
+
+TORA FACE System - Secure Facial Recognition for Law Enforcement
+Built for Burundi and Rwanda National Security
 4. Department confirmation process
 
 ### Admin Users
